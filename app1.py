@@ -11,7 +11,7 @@ import pickle
 import bz2
 import _pickle as cPickle
 import cv2
-import matplotlib.pyplot as plt
+#import matplotlib.pyplot as plt
 import math
 import cv2
 import hashlib
@@ -19,7 +19,7 @@ import glob
 import os
 from scipy import fft
 from mtcnn.mtcnn import MTCNN
-import matplotlib.image as img
+#import matplotlib.image as img
 from keras.models import load_model
 import streamlit as st
 import pandas as pd
@@ -31,8 +31,8 @@ import glob
 import os
 from scipy import fft
 from mtcnn.mtcnn import MTCNN
-import matplotlib.pyplot as plt
-import matplotlib.image as img
+#import matplotlib.pyplot as plt
+#import matplotlib.image as img
 
 idname = ''
 masked = False
@@ -137,10 +137,11 @@ detect_mask(i)
 
 # reading the image
 #IPath = 'test/SoniaLaskar_Mask_test.jpg'
-testImage = img.imread(IPath)
+testImage = cv2.imread(IPath) #img.imread(IPath)
   
 # displaying the image
-plt.imshow(testImage)
+
+#plt.imshow(testImage)
 
 
 
@@ -178,12 +179,12 @@ faces = face_cascade.detectMultiScale(rerect_size)
 
 #print(rerect_size)
 
-print(faces)
+#print(faces)
 
 for f in faces:
     (x, y, w, h) = [v * rect_size for v in f]
 
-    print(x,y,w,h)
+    #print(x,y,w,h)
 
     face_img = im[y:y+h, x:x+w]
     rerect_sized=cv2.resize(face_img,(150,150))
@@ -308,13 +309,13 @@ except:
 FV_LIST.append(face_half_area)
 
 #resizing image - HOG
-print(len(FV_LIST))
-print(roi_face_half.shape)
+#print(len(FV_LIST))
+#print(roi_face_half.shape)
 resized_img = resize(roi_face_half, (128,64))
-print(resized_img.shape)
-plt.imshow(resized_img)
-plt.show()
-print(resized_img.shape)
+#print(resized_img.shape)
+#plt.imshow(resized_img)
+#plt.show()
+#print(resized_img.shape)
 
 #creating hog features
 fd, hog_image = hog(resized_img, orientations=9, pixels_per_cell=(8, 8),
@@ -327,11 +328,11 @@ hog_image_rescaled_flat = hog_image_rescaled.flatten()
 
 FV_LIST.extend(hog_image_rescaled_flat)
 
-print(len(FV_LIST))
+#print(len(FV_LIST))
 #print(FV_LIST)
 
-plt.imshow(hog_image_rescaled)
-plt.show()
+#plt.imshow(hog_image_rescaled)
+#plt.show()
 
 df = pd.DataFrame(data = [FV_LIST])
 
@@ -353,7 +354,7 @@ prediction_proba = load_clf.predict_proba(df)
 
 citi = ['Male','Female']
 
-print('Identified:',citi[int(prediction)])
+#print('Identified:',citi[int(prediction)])
 
 gender = citi[int(prediction)]
 
@@ -361,12 +362,13 @@ gender_code = int(prediction)
 
  
 # reading the image
-testImage = img.imread(IPath)
+testImage = cv2.imread(IPath)#img.imread(IPath)
+
   
 # displaying the image
-plt.imshow(testImage)
+#plt.imshow(testImage)
 
-plt.show()
+#plt.show()
 
 #st.write('Identified:',citi[int(prediction)])
 gender = citi[int(prediction)]
@@ -380,10 +382,10 @@ gender = citi[int(prediction)]
 
   
 # reading the image
-testImage = img.imread(IPath)
+testImage = cv2.imread(IPath)#img.imread(IPath)
   
 # displaying the image
-plt.imshow(testImage)
+#plt.imshow(testImage)
 
 
 
@@ -430,12 +432,12 @@ faces = face_cascade.detectMultiScale(rerect_size)
 
 #print(rerect_size)
 
-print(faces)
+#print(faces)
 
 for f in faces:
     (x, y, w, h) = [v * rect_size for v in f]
 
-    print(x,y,w,h)
+    #print(x,y,w,h)
 
     face_img = im[y:y+h, x:x+w]
     rerect_sized=cv2.resize(face_img,(150,150))
@@ -559,20 +561,20 @@ except:
 FV_LIST.append(face_half_area)
 
 #resizing image - HOG
-print(len(FV_LIST))
-print(roi_face_half.shape)
+#print(len(FV_LIST))
+#print(roi_face_half.shape)
 resized_img = resize(roi_face_half, (128,64))
-print(resized_img.shape)
-plt.imshow(resized_img)
-plt.show()
-print(resized_img.shape)
+#print(resized_img.shape)
+#plt.imshow(resized_img)
+#plt.show()
+#print(resized_img.shape)
 
 #creating hog features
 fd, hog_image = hog(resized_img, orientations=9, pixels_per_cell=(8, 8),
             cells_per_block=(2, 2), visualize=True)
 # Rescale histogram for better display
 hog_image_rescaled = exposure.rescale_intensity(hog_image, in_range=(0, 10))
-print(hog_image_rescaled.shape)
+#print(hog_image_rescaled.shape)
 
 hog_image_rescaled_flat = hog_image_rescaled.flatten()
 
@@ -580,11 +582,11 @@ FV_LIST.extend(hog_image_rescaled_flat)
 
 FV_LIST.append(gender_code)
 
-print(len(FV_LIST))
+#print(len(FV_LIST))
 #print(FV_LIST)
 
-plt.imshow(hog_image_rescaled)
-plt.show()
+#plt.imshow(hog_image_rescaled)
+#plt.show()
 
 df = pd.DataFrame(data = [FV_LIST])
 #-----------------------------------------------------------------
@@ -599,13 +601,6 @@ mods_faces_pct =[]
 
 cities = ['Shah Rukh Khan','Sonia Laskar','Preity Zinta','Bobby Deol','Priyanka Chopra','Angelina Jolie','Anne Hathaway','Nicolas Cage','Amitabh Bacchan','Brad Pitt','Abhishek Bacchan','Ananya Pandey','Saif Ali Khan','Kareena Kapoor','Malaika Arora']
 
-import pandas as pd
-import numpy as np
-import pickle
-import bz2
-import _pickle as cPickle
-import cv2
-import matplotlib.pyplot as plt
 
 
 def decompress_pickle(file):
@@ -622,22 +617,22 @@ load_clf = data
 prediction = load_clf.predict(df)
 prediction_proba_3 = load_clf.predict_proba(df)
 
-print('Identified:',cities[int(prediction)])
+#print('Identified:',cities[int(prediction)])
 
-import matplotlib.pyplot as plt
-import matplotlib.image as img
+#import matplotlib.pyplot as plt
+#import matplotlib.image as img
   
 # reading the image
-testImage = img.imread(IPath)
+testImage = cv2.imread(IPath)#img.imread(IPath)
   
 # displaying the image
-plt.imshow(testImage)
+#plt.imshow(testImage)
 
-plt.show()
+#plt.show()
 
 
 r_prob_2 = prediction_proba_3[0][prediction[0]]
-print('Surety Percentage:',round(r_prob_2*100,2),'%')
+#print('Surety Percentage:',round(r_prob_2*100,2),'%')
 #print(prediction[0])
 #print(prediction_proba_3)
 
@@ -664,13 +659,6 @@ mods_faces_pct.append(round(r_prob_2*100,2))
 
 cities = ['Shah Rukh Khan','Sonia Laskar','Preity Zinta','Bobby Deol','Priyanka Chopra','Angelina Jolie','Anne Hathaway','Nicolas Cage','Amitabh Bacchan','Brad Pitt','Abhishek Bacchan','Ananya Pandey','Saif Ali Khan','Kareena Kapoor','Malaika Arora']
 
-import pandas as pd
-import numpy as np
-import pickle
-import bz2
-import _pickle as cPickle
-import cv2
-import matplotlib.pyplot as plt
 
 def decompress_pickle(file):
     data = bz2.BZ2File(file, 'rb')
@@ -686,22 +674,22 @@ load_clf = data
 prediction = load_clf.predict(df)
 prediction_proba_3 = load_clf.predict_proba(df)
 
-print('Identified:',cities[int(prediction)])
+#print('Identified:',cities[int(prediction)])
 
-import matplotlib.pyplot as plt
-import matplotlib.image as img
+#import matplotlib.pyplot as plt
+#import matplotlib.image as img
   
 # reading the image
-testImage = img.imread(IPath)
+testImage = cv2.imread(IPath)#img.imread(IPath)
   
 # displaying the image
-plt.imshow(testImage)
+#plt.imshow(testImage)
 
-plt.show()
+#plt.show()
 
 
 r_prob_2 = prediction_proba_3[0][prediction[0]]
-print('Surety Percentage:',round(r_prob_2*100,2),'%')
+#print('Surety Percentage:',round(r_prob_2*100,2),'%')
 #print(prediction[0])
 #print(prediction_proba_3)
 
@@ -747,22 +735,22 @@ load_clf = data
 prediction = load_clf.predict(df)
 prediction_proba_3 = load_clf.predict_proba(df)
 
-print('Identified:',cities[int(prediction)])
+#print('Identified:',cities[int(prediction)])
 
-import matplotlib.pyplot as plt
-import matplotlib.image as img
+#import matplotlib.pyplot as plt
+#import matplotlib.image as img
   
 # reading the image
-testImage = img.imread(IPath)
+testImage = cv2.imread(IPath)#img.imread(IPath)
   
 # displaying the image
-plt.imshow(testImage)
+#plt.imshow(testImage)
 
-plt.show()
+#plt.show()
 
 
 r_prob_2 = prediction_proba_3[0][prediction[0]]
-print('Surety Percentage:',round(r_prob_2*100,2),'%')
+#print('Surety Percentage:',round(r_prob_2*100,2),'%')
 #print(prediction[0])
 #print(prediction_proba_3)
 
@@ -801,9 +789,9 @@ else:
     
 #_______________________________________________________________________
 
-print('Name:' , idname)#cities[int(prediction)])
-print('Surety Percentage:',round(r_prob_2*100,2),'%')
-print('Mask Detected:',masked)
+#print('Name:' , idname)#cities[int(prediction)])
+#print('Surety Percentage:',round(r_prob_2*100,2),'%')
+#print('Mask Detected:',masked)
 
 #st.write('Name:' )#cities[int(prediction)])
 #st.success(idname)
@@ -866,7 +854,7 @@ X_1_2_3_cust_id = []
 for i in [X_1_cust_id,X_2_cust_id,X_3_cust_id]:
     X_1_2_3_cust_id.extend(i)
 chft = random.choice(X_1_2_3_cust_id)
-print(chft,'\n')
+#print(chft,'\n')
 
 #print(clv_all.loc[chft])
 
@@ -889,7 +877,7 @@ XXX = clv_all[clv_all.counts.gt(3)]
 #XXX.set_index('cust',inplace = True)
 
 chft_rest = random.choices(XXX.index.values, k = 14)
-print(chft_rest,'\n')
+#print(chft_rest,'\n')
 
 for i in chft_rest:
     print(clv_all.loc[i])
@@ -914,7 +902,7 @@ def func_email(s):
     for i in s:
         s1.append(i.lower())
     
-    print("".join(s1)+'@'+'hotmail.com')
+    #print("".join(s1)+'@'+'hotmail.com')
     return "".join(s1)+'@'+'hotmail.com'
       
 
@@ -934,11 +922,11 @@ X = X.reset_index()
 
 #st.write(data)
 
-print(idname)
+#print(idname)
 
 trs_cnt = cts[int(data[data['Name'] == idname]['cust'])]
 
-print('Number of previous transactions: ',trs_cnt)
+#print('Number of previous transactions: ',trs_cnt)
 
 if trs_cnt==1 :
     f1 = X.groupby('cust').agg({'sales':'first'})
@@ -950,7 +938,7 @@ if trs_cnt==1 :
 
     #print(clv_all_RFMT[clv_all_RFMT['cust'] == int(data[data['Name'] == idname]['cust'])][['recency','frequency','T','monetary_value']])
 
-    print(Xy)
+    #print(Xy)
 
     Xy['First_TValue'] = f[0]
 
@@ -960,7 +948,7 @@ if trs_cnt==1 :
 
     cclv = md.predict(Xy)[0]
 
-    print(md.predict(Xy)[0])
+    #print(md.predict(Xy)[0])
     
 elif trs_cnt==2 :
 
@@ -978,7 +966,7 @@ elif trs_cnt==2 :
 
     #print(clv_all_RFMT[clv_all_RFMT['cust'] == int(data[data['Name'] == idname]['cust'])][['recency','frequency','T','monetary_value']])
 
-    print(Xy)
+    #print(Xy)
 
     Xy['First_TValue'] = f[0]
     Xy['Second_TValue'] = ff['sales']
@@ -989,7 +977,7 @@ elif trs_cnt==2 :
 
     cclv = md.predict(Xy)[0]
     
-    print(md.predict(Xy)[0])
+    #print(md.predict(Xy)[0])
 
 elif trs_cnt==3 :
 
@@ -1008,7 +996,7 @@ elif trs_cnt==3 :
 
     fff = f3.loc[int(data[data['Name'] == idname]['cust'])]
 
-    print(f[0],ff['sales'],fff['sales'])
+    #print(f[0],ff['sales'],fff['sales'])
 
     Xy = clv_all_RFMT[clv_all_RFMT['cust'] == int(data[data['Name'] == idname]['cust'])][['recency','frequency','T','monetary_value']]
 
@@ -1029,7 +1017,7 @@ elif trs_cnt==3 :
 elif trs_cnt>=4 :
     #print(trs_cnt)
     cclv = round(data[data['Name']==idname]['clv'].values[0],2)
-    print('CLV: ',round(data[data['Name']==idname]['clv'].values[0],2))
+    #print('CLV: ',round(data[data['Name']==idname]['clv'].values[0],2))
     
     
 #___________________________________________________________________________
@@ -1051,7 +1039,7 @@ shortest_dist_idx = np.argmin(dist)
 
 y_new = model.labels_[model.core_sample_indices_[shortest_dist_idx]]
 
-print(y_new)
+#print(y_new)
 
 ccohort = y_new
 
@@ -1060,7 +1048,7 @@ ccohort = y_new
 #So decide recommended offer
 offer = 'C'+str(y_new)
 
-print(offer)
+#print(offer)
 
 #___________________________________________________________________________
 
@@ -1068,8 +1056,8 @@ print(offer)
 
 em = data[data['Name']==idname]['email']
 ph = data[data['Name']==idname]['phone']
-print('Email:',em.values[0])
-print('Phone:',ph.values[0])
+#print('Email:',em.values[0])
+#print('Phone:',ph.values[0])
 
 #___________________________________________________________________________
 
