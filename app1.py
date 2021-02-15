@@ -22,6 +22,17 @@ from mtcnn.mtcnn import MTCNN
 import matplotlib.image as img
 from keras.models import load_model
 import streamlit as st
+import pandas as pd
+import numpy as np
+import cv2
+import matplotlib.pyplot as plt
+import hashlib
+import glob
+import os
+from scipy import fft
+from mtcnn.mtcnn import MTCNN
+import matplotlib.pyplot as plt
+import matplotlib.image as img
 
 idname = ''
 masked = False
@@ -326,13 +337,6 @@ df = pd.DataFrame(data = [FV_LIST])
 
 #_______________________________________________________________________________
 
-import pandas as pd
-import numpy as np
-import pickle
-import bz2
-import _pickle as cPickle
-import cv2
-import matplotlib.pyplot as plt
 
 def decompress_pickle(file):
     data = bz2.BZ2File(file, 'rb')
@@ -355,9 +359,7 @@ gender = citi[int(prediction)]
 
 gender_code = int(prediction)
 
-import matplotlib.pyplot as plt
-import matplotlib.image as img
-  
+ 
 # reading the image
 testImage = img.imread(IPath)
   
@@ -375,20 +377,7 @@ gender = citi[int(prediction)]
 
 #predict person/ customer
 
-import pandas as pd
-import numpy as np
-import cv2
-import matplotlib.pyplot as plt
-import hashlib
-import glob
-import os
-from scipy import fft
-from mtcnn.mtcnn import MTCNN
 
-#IPath = r"5cd9a2c7db.jpg"
-
-import matplotlib.pyplot as plt
-import matplotlib.image as img
   
 # reading the image
 testImage = img.imread(IPath)
