@@ -1,0 +1,11 @@
+streamlit
+opencv-contrib-python-headless
+numpy
+panda
+scikit-learn
+Keras
+scipy
+mtcnn
+
+
+
