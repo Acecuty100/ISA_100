@@ -955,27 +955,7 @@ ph = data[data['Name']==idname]['phone']
 #___________________________________________________________________________
 
 
-import smtplib
-from email.mime.text import MIMEText
 
-gmailaddress = 'sonnialaskar@gmail.com'#input("what is your gmail address? \n ")
-gmailpassword = 'Sonia1Laskar'#input("what is the password for that email address? \n  ")
-mailto = str(em.values[0])#'sonialaskar@hotmail.com'#input("what email address do you want to send your message to? \n ")
-
-str_msg_str = 'Hi '+ idname + '. Welcome to our store. Avail the special offers ' + offer+' for you at our store.'
-
-msg = MIMEText(str_msg_str)
-
-msg['Subject'] = 'CD Store Promotional Offer mail'
-msg['From'] = 'Sonia Laskars CD Store'#'sonnialaskar@gmail.com'
-msg['To'] = str(em.values[0])#'sonialaskar@hotmail.com'
-
-mailServer = smtplib.SMTP('smtp.gmail.com' , 587)
-mailServer.starttls()
-mailServer.login(gmailaddress , gmailpassword)
-mailServer.sendmail(gmailaddress, mailto , msg.as_string())
-print(" \n Sent!")
-mailServer.quit()
 
 #___________________________________________________________________________
 
