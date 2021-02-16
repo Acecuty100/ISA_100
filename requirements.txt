@@ -8,4 +8,4 @@ mtcnn
 scikit-image
 opencv-python-headless
 Keras
-
+tensorflow-cpu
