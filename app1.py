@@ -97,7 +97,8 @@ def detect_mask(IPath):
 
         reshaped=np.reshape(normalized,(1,150,150,3))
 
-        reshaped = np.vstack([reshaped])
+        reshaped = np.v
+            stack([reshaped])
 
         result=model.predict(reshaped)
 
@@ -659,68 +660,15 @@ mods_faces_pct.append(round(r_prob_2*100,2))
 #st.write('Identified:',cities[int(prediction)])
 #st.write('Surety Percentage:',round(r_prob_2*100,2),'%')
 
+idname = mods_faces[0]
+
 #-----------------------------------------------------------------
 
 
 #rfc_c_16_stacked_5_xg_stacked_FINAL
 
-cities = ['Shah Rukh Khan','Sonia Laskar','Preity Zinta','Bobby Deol','Priyanka Chopra','Angelina Jolie','Anne Hathaway','Nicolas Cage','Amitabh Bacchan','Brad Pitt','Abhishek Bacchan','Ananya Pandey','Saif Ali Khan','Kareena Kapoor','Malaika Arora']
-
-#Stacking Run
-
-def decompress_pickle(file):
-    data = bz2.BZ2File(file, 'rb')
-    data = cPickle.load(data)
-    return data
-    
-#choose a different model here
-data = decompress_pickle('rfc_c_16_stacked_5_xg_stacked_FINAL.pbz2')
-#data = decompress_pickle('rfc_c_16_3.pbz2')
 
 
-
-
-load_clf = data
-
-prediction = load_clf.predict(df)
-prediction_proba_3 = load_clf.predict_proba(df)
-
-#print('Identified:',cities[int(prediction)])
-
-#import matplotlib.pyplot as plt
-#import matplotlib.image as img
-  
-# reading the image
-testImage = cv2.imread(IPath)#img.imread(IPath)
-  
-# displaying the image
-#plt.imshow(testImage)
-
-#plt.show()
-
-
-r_prob_2 = prediction_proba_3[0][prediction[0]]
-#print('Surety Percentage:',round(r_prob_2*100,2),'%')
-#print(prediction[0])
-#print(prediction_proba_3)
-
-list_indx_3 = []
-for i in range(len(prediction_proba_3[0])):
-    if prediction_proba_3[0][i]>0:
-        list_indx_3.append(i)
-        
-#print('\nProbabilties: ')
-#for i in list_indx_3:
-#    print(cities[i],prediction_proba_3[0][i])
-
-mods_faces.append(cities[int(prediction)])
-mods_faces_pct.append(round(r_prob_2*100,2))
-
-#st.write('Stacking')
-#st.write('Identified:',cities[int(prediction)])
-#st.write('Surety Percentage:',round(r_prob_2*100,2),'%')
-
-idname = mods_faces[1]
     
     
 #---------------------------------------------------------------------
