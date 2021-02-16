@@ -1,3 +1,4 @@
+#coder: Sonia Laskar
 
 #importing required libraries
 
@@ -97,8 +98,7 @@ def detect_mask(IPath):
 
         reshaped=np.reshape(normalized,(1,150,150,3))
 
-        reshaped = np.v
-            stack([reshaped])
+        reshaped = np.vstack([reshaped])
 
         result=model.predict(reshaped)
 
