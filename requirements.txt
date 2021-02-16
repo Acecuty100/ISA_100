@@ -7,4 +7,5 @@ scipy
 mtcnn
 scikit-image
 opencv-python-headless
+Keras
 
