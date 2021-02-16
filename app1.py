@@ -982,7 +982,9 @@ def find_cust_prev_transactions_last_clv(idname):
         w = 180
         col1, mid, col2 = st.beta_columns([1+w,1,20+w])
         with col1:
-            st.image(imgg1, width=w, caption='Customer Entering Store')
+            #st.image(imgg1, width=w, caption='Customer Entering Store')
+            st.image(testImage, width=w, caption='Customer Entering Store')
+            
             st.success(idname)
                     
             #print('Name:' , cities[int(prediction)])
