@@ -603,11 +603,6 @@ mods_faces_pct =[]
 #RFC
 
 
-
-#----------------------------------------------------------------
-
-#XGBOOST
-
 cities = ['Shah Rukh Khan','Sonia Laskar','Preity Zinta','Bobby Deol','Priyanka Chopra','Angelina Jolie','Anne Hathaway','Nicolas Cage','Amitabh Bacchan','Brad Pitt','Abhishek Bacchan','Ananya Pandey','Saif Ali Khan','Kareena Kapoor','Malaika Arora']
 
 
@@ -618,7 +613,7 @@ def decompress_pickle(file):
 
 #choose a different model here
 #data = decompress_pickle('rfc_c_16_stacked_5_xg_stacked_FINAL.pbz2')
-data = decompress_pickle('rfc_c_16_3.pbz2')
+data = decompress_pickle('rfc_c_16_2.pbz2')
 
 load_clf = data
 
@@ -661,6 +656,13 @@ mods_faces_pct.append(round(r_prob_2*100,2))
 #st.write('Surety Percentage:',round(r_prob_2*100,2),'%')
 
 idname = mods_faces[0]
+
+
+
+#----------------------------------------------------------------
+
+#XGBOOST
+
 
 #-----------------------------------------------------------------
 
