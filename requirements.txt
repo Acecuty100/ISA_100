@@ -9,3 +9,4 @@ scikit-image
 opencv-python-headless
 keras>=2.0.0
 opencv-python>=4.1.0
+tensorfow-cpu
