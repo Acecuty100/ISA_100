@@ -601,58 +601,6 @@ mods_faces_pct =[]
 
 #RFC
 
-cities = ['Shah Rukh Khan','Sonia Laskar','Preity Zinta','Bobby Deol','Priyanka Chopra','Angelina Jolie','Anne Hathaway','Nicolas Cage','Amitabh Bacchan','Brad Pitt','Abhishek Bacchan','Ananya Pandey','Saif Ali Khan','Kareena Kapoor','Malaika Arora']
-
-
-
-def decompress_pickle(file):
-    data = bz2.BZ2File(file, 'rb')
-    data = cPickle.load(data)
-    return data
-
-#choose a different model here
-#data = decompress_pickle('rfc_c_16_stacked_5_xg_stacked_FINAL.pbz2')
-data = decompress_pickle('rfc_c_16_2.pbz2')
-
-load_clf = data
-
-prediction = load_clf.predict(df)
-prediction_proba_3 = load_clf.predict_proba(df)
-
-#print('Identified:',cities[int(prediction)])
-
-#import matplotlib.pyplot as plt
-#import matplotlib.image as img
-  
-# reading the image
-testImage = cv2.imread(IPath)#img.imread(IPath)
-  
-# displaying the image
-#plt.imshow(testImage)
-
-#plt.show()
-
-
-r_prob_2 = prediction_proba_3[0][prediction[0]]
-#print('Surety Percentage:',round(r_prob_2*100,2),'%')
-#print(prediction[0])
-#print(prediction_proba_3)
-
-list_indx_3 = []
-for i in range(len(prediction_proba_3[0])):
-    if prediction_proba_3[0][i]>0:
-        list_indx_3.append(i)
-        
-#print('\nProbabilties: ')
-#for i in list_indx_3:
-#    print(cities[i],prediction_proba_3[0][i])
-
-mods_faces.append(cities[int(prediction)])
-mods_faces_pct.append(round(r_prob_2*100,2))
-
-#st.write('RFC')
-#st.write('Identified:',cities[int(prediction)])
-#st.write('Surety Percentage:',round(r_prob_2*100,2),'%')
 
 
 #----------------------------------------------------------------
@@ -772,22 +720,12 @@ mods_faces_pct.append(round(r_prob_2*100,2))
 #st.write('Identified:',cities[int(prediction)])
 #st.write('Surety Percentage:',round(r_prob_2*100,2),'%')
 
+idname = mods_faces[1]
+    
+    
 #---------------------------------------------------------------------
 
-tot_f = 0
 
-if ( (mods_faces_pct[0]) <= 15 and (mods_faces_pct[0]) >= 10) and (mods_faces[0]!=mods_faces[1] ) and (mods_faces[0]!=mods_faces[2] ):
-    tot_f = (5)*mods_faces_pct[0]
-
-if (mods_faces[0] == mods_faces[1]) and (mods_faces[0]!=mods_faces[2] ):
-    tot_f = (1.5)*mods_faces_pct[0] + mods_faces_pct[1]
-    print(tot_f,mods_faces_pct[2])
-
-if tot_f > mods_faces_pct[2]:
-    #idname = cities[int(prediction)]
-    idname = mods_faces[0]
-else:
-    idname = mods_faces[2]
     
 #_______________________________________________________________________
 
@@ -943,10 +881,12 @@ if trs_cnt==1 :
     #print(Xy)
 
     Xy['First_TValue'] = f[0]
+    Xy['Second_TValue'] = 0
+    Xy['Third_TValue'] = 0
 
     #md = pickle.load(open('hclv_1.pkl','rb'))
     
-    md = decompress_pickle('hclv_1.pbz2')
+    md = decompress_pickle('hclv_3.pbz2')
 
     cclv = md.predict(Xy)[0]
 
@@ -972,10 +912,11 @@ elif trs_cnt==2 :
 
     Xy['First_TValue'] = f[0]
     Xy['Second_TValue'] = ff['sales']
+    Xy['Third_TValue'] = 0
 
     #md = pickle.load(open('hclv_2.pkl','rb'))
     
-    md = decompress_pickle('hclv_2.pbz2')
+    md = decompress_pickle('hclv_3.pbz2')
 
     cclv = md.predict(Xy)[0]
     
