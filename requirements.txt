@@ -3,9 +3,8 @@ opencv-contrib-python-headless
 numpy
 panda
 scikit-learn
-Keras
 scipy
 mtcnn
 scikit-image
 opencv-python-headless
-tensorflow
+

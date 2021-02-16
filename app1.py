@@ -20,7 +20,9 @@ import os
 from scipy import fft
 from mtcnn.mtcnn import MTCNN
 #import matplotlib.image as img
-from keras.models import load_model
+
+#from keras.models import load_model
+
 import streamlit as st
 import pandas as pd
 import numpy as np
@@ -35,7 +37,7 @@ from mtcnn.mtcnn import MTCNN
 #import matplotlib.image as img
 
 idname = ''
-masked = False
+masked = True
 cclv = ''
 ccohort = ''
 offer = ''
@@ -129,8 +131,8 @@ def detect_mask(IPath):
         
         #-------------------------------------------------------
         
-i = IPath
-detect_mask(i)
+#i = IPath
+#detect_mask(i)
 #print('---------------------------------------------\n')
 
 #----------------------------------------------------------------
