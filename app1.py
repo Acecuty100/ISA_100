@@ -39,12 +39,9 @@ st.text('Description: This product called ISA, during Covid 19, enables to detec
 
 from PIL import Image
 image = Image.open(IPath)
+#st.image(image, caption='Current Customer Image as Input captured at sales outlet',use_column_width=True)
 
-st.image(image, caption='Current Customer Image as Input captured at sales outlet',use_column_width=True)
-
-global imgg1
 imgg1 = img.imread(IPath)
-st.image(imgg1, caption='Current Customer Image',use_column_width=True)
 
 #----------------------------------------------------------------
 
@@ -676,7 +673,7 @@ def find_cust_prev_transactions_last_clv(idname):
         col1, mid, col2 = st.beta_columns([1+w,1,20+w])
         with col1:
             #st.image(imgg1, width=w, caption='Customer Entering Store')
-            st.image(testImage, width=w, caption='Customer Entering Store')
+            st.image(imgg1, width=w, caption='Customer Entering Store')
             
             st.success(idname)
             
