@@ -1,5 +1,7 @@
 #coder: Sonia Laskar
 
+#Capstone Project: Intelligent Sales Assistant in Non Contractual Sales Setting
+
 #importing required libraries
 
 import pandas as pd
@@ -12,30 +14,15 @@ import pickle
 import bz2
 import _pickle as cPickle
 import cv2
-#import matplotlib.pyplot as plt
 import math
-import cv2
 import hashlib
 import glob
 import os
 from scipy import fft
 from mtcnn.mtcnn import MTCNN
-#import matplotlib.image as img
-
-#from keras.models import load_model
-
 import streamlit as st
-import pandas as pd
-import numpy as np
-import cv2
 import matplotlib.pyplot as plt
-import hashlib
-import glob
-import os
-from scipy import fft
-from mtcnn.mtcnn import MTCNN
-#import matplotlib.pyplot as plt
-#import matplotlib.image as img
+import matplotlib.image as img
 
 idname = ''
 masked = True
@@ -46,107 +33,26 @@ gender = ''
 
 IPath = 'test/SoniaLaskar_Mask_test.jpg'
 
-#st.header('')
-st.subheader('Intelligent Sales Assisstant (Conceptualized & executed by Sonia Laskar)')
+st.header('Intelligent Sales Assisstant (Conceptualized & executed by Sonia Laskar)')
+
+st.text('Description: This product called ISA, during Covid 19, enables to detect mask of customers (using CNN),detect customer gender using masked customer image, recognises Masked Customers (Regression Task), predict CLV of relatively new customers with less than three transactions old customers using existing customers (Classification Task), predict their cohorts (Clustering Task) and recommends sales promotional offers to encourage sales and maintain customer satisfaction while maintaining minimum interaction between customer and on ground sales agent on retail shop floor for safety during covid 19. This also is directed to increase footfalls during covid that providing offers through email/sms instantly only when customer visits retail shop.')
+
 from PIL import Image
 image = Image.open(IPath)
 
-#st.image(image, caption='Current Customer Image',use_column_width=True)
+st.image(image, caption='Current Customer Image as Input captured at sales outlet',use_column_width=True)
 
-
-def detect_mask(IPath):
-    #model=load_model("my_model.h5")
-    model=load_model("Mask_Detector.h5")
-    results={0:'without mask',1:'mask'}
-    GR_dict={0:(255,0,0),1:(0,0,255)}
-    rect_size = 4
-   
-    face_cascade = cv2.CascadeClassifier(cv2.data.haarcascades + 'haarcascade_frontalface_default.xml')
-
-    im = cv2.imread(IPath)
-    
-    global imgg1
-    imgg1 = img.imread(IPath)
-    #plt.imshow(im)
-    #plt.show()
-
-    im=cv2.flip(im,1,1)
-
-    rerect_size = cv2.resize(im, (im.shape[1] // rect_size, im.shape[0] // rect_size))
-    faces = face_cascade.detectMultiScale(rerect_size)
-
-    for f in faces:
-        (x, y, w, h) = [v * rect_size for v in f]
-
-        print(x, y, w, h)
-
-        face_img = im[y:y+h, x:x+w]
-
-
-        #plt.imshow(face_img)
-        #plt.show()
-
-        rerect_sized=cv2.resize(face_img,(150,150))
-
-        #plt.imshow(rerect_sized)
-        #plt.show()
-
-        normalized=rerect_sized/255.0
-
-        #plt.imshow(normalized)
-        #plt.show()
-
-        reshaped=np.reshape(normalized,(1,150,150,3))
-
-        reshaped = np.vstack([reshaped])
-
-        result=model.predict(reshaped)
-
-        print('Result Probabilities: ',result)
-
-        label=np.argmax(result,axis=1)[0]
-
-        print('Result label: ',label)
-    
-
-        print('Result:',results[label])
-        
-        if label == 1:
-            global masked
-            masked = True
-        
-        #st.write('Masked: ', masked)
-
-        cv2.rectangle(im,(x,y),(x+w,y+h),GR_dict[label],2)
-        cv2.rectangle(im,(x,y-40),(x+w,y),GR_dict[label],-1)
-        cv2.putText(im, results[label], (x, y-20),cv2.FONT_HERSHEY_SIMPLEX,0.8,(255,255,255),2)
-        
-        cv2.rectangle(imgg1,(x,y),(x+w,y+h),GR_dict[label],2)
-        cv2.rectangle(imgg1,(x,y-40),(x+w,y),GR_dict[label],-1)
-        cv2.putText(imgg1, results[label], (x, y-20),cv2.FONT_HERSHEY_SIMPLEX,0.8,(255,255,255),2)
-        
-        #plt.imshow(im)
-        #plt.show()
-        
-        #st.image(imgg1,caption='Current Customer Image',use_column_width=True)
-        
-        #-------------------------------------------------------
-        
-#i = IPath
-#detect_mask(i)
-#print('---------------------------------------------\n')
+global imgg1
+imgg1 = img.imread(IPath)
+st.image(imgg1, caption='Current Customer Image',use_column_width=True)
 
 #----------------------------------------------------------------
 
 # reading the image
-#IPath = 'test/SoniaLaskar_Mask_test.jpg'
-testImage = cv2.imread(IPath) #img.imread(IPath)
+
+testImage = cv2.imread(IPath)
   
 # displaying the image
-
-#plt.imshow(testImage)
-
-
 
 MEAN_IMG = []
 FSHIFT_IMG = []
@@ -160,10 +66,8 @@ rect_size = 4
 face_cascade = cv2.CascadeClassifier(cv2.data.haarcascades + 'haarcascade_frontalface_default.xml')
 
 originalImage = cv2.imread(IPath)#(fls)
-#plt.imshow(originalImage, cmap = 'gray')
 
 grayImage = cv2.cvtColor(originalImage, cv2.COLOR_BGR2GRAY)
-
 
 H2 = grayImage.copy()
 grayImage.resize(180,180)
@@ -173,21 +77,11 @@ img = grayImage.copy()
 
 im=cv2.flip(H2,1,1)
 
-
-
 rerect_size = cv2.resize(im, (im.shape[1] // rect_size, im.shape[0] // rect_size))
 faces = face_cascade.detectMultiScale(rerect_size)
 
-
-
-#print(rerect_size)
-
-#print(faces)
-
 for f in faces:
     (x, y, w, h) = [v * rect_size for v in f]
-
-    #print(x,y,w,h)
 
     face_img = im[y:y+h, x:x+w]
     rerect_sized=cv2.resize(face_img,(150,150))
@@ -197,19 +91,12 @@ for f in faces:
 
     cv2.rectangle(im,(x,y),(x+w,y+h),GR_dict[label],2)
     cv2.rectangle(im,(x,y-40),(x+w,y),GR_dict[label],-1)
-    #cv2.putText(im, results[label], (x, y-10),cv2.FONT_HERSHEY_SIMPLEX,0.8,(255,255,255),2)
-
+    
     roi_face=face_img.copy()
 
     roi_face_half=roi_face[0:int(face_img.shape[0]/2),:]
 
-
-    #folder_path = os.path.join(folder_path,file_name)
-
     image_content = roi_face_half.copy()
-
-
-    
 
 f = np.fft.fft2(roi_face_half)
 fshift = np.fft.fftshift(f)
@@ -290,8 +177,6 @@ try:
     fhead_measure = np.linalg.norm(np.array([fhead_x,fhead_y])-np.array([head_x,head_y]))
     #print(fhead_measure)
 
-
-
     FV_LIST[15] = np.linalg.norm(np.array(faces[0]['keypoints']['left_eye'])-np.array(faces[0]['keypoints']['right_eye']))
     FV_LIST.append(fhead_measure)
     FV_LIST.append(left_eye_distance)
@@ -311,18 +196,12 @@ except:
 
 FV_LIST.append(face_half_area)
 
-#resizing image - HOG
-#print(len(FV_LIST))
-#print(roi_face_half.shape)
 resized_img = resize(roi_face_half, (128,64))
-#print(resized_img.shape)
-#plt.imshow(resized_img)
-#plt.show()
-#print(resized_img.shape)
 
 #creating hog features
 fd, hog_image = hog(resized_img, orientations=9, pixels_per_cell=(8, 8),
             cells_per_block=(2, 2), visualize=True)
+            
 # Rescale histogram for better display
 hog_image_rescaled = exposure.rescale_intensity(hog_image, in_range=(0, 10))
 print(hog_image_rescaled.shape)
@@ -330,12 +209,6 @@ print(hog_image_rescaled.shape)
 hog_image_rescaled_flat = hog_image_rescaled.flatten()
 
 FV_LIST.extend(hog_image_rescaled_flat)
-
-#print(len(FV_LIST))
-#print(FV_LIST)
-
-#plt.imshow(hog_image_rescaled)
-#plt.show()
 
 df = pd.DataFrame(data = [FV_LIST])
 
@@ -357,23 +230,14 @@ prediction_proba = load_clf.predict_proba(df)
 
 citi = ['Male','Female']
 
-#print('Identified:',citi[int(prediction)])
-
 gender = citi[int(prediction)]
 
 gender_code = int(prediction)
 
  
 # reading the image
-testImage = cv2.imread(IPath)#img.imread(IPath)
-
+testImage = cv2.imread(IPath)
   
-# displaying the image
-#plt.imshow(testImage)
-
-#plt.show()
-
-#st.write('Identified:',citi[int(prediction)])
 gender = citi[int(prediction)]
 #---------------------------------------------------------------------------
 
@@ -382,15 +246,8 @@ gender = citi[int(prediction)]
 
 #predict person/ customer
 
-
-  
 # reading the image
-testImage = cv2.imread(IPath)#img.imread(IPath)
-  
-# displaying the image
-#plt.imshow(testImage)
-
-
+testImage = cv2.imread(IPath)
 
 MEAN_IMG = []
 FSHIFT_IMG = []
@@ -404,19 +261,8 @@ rect_size = 4
 face_cascade = cv2.CascadeClassifier(cv2.data.haarcascades + 'haarcascade_frontalface_default.xml')
 
 originalImage = cv2.imread(IPath)#(fls)
-#plt.imshow(originalImage, cmap = 'gray')
-
-
-
-
-#from skimage import io
-
-#img = io.imread(file_path)
-
-
 
 grayImage = cv2.cvtColor(originalImage, cv2.COLOR_BGR2GRAY)
-
 
 H2 = grayImage.copy()
 grayImage.resize(180,180)
@@ -426,21 +272,11 @@ img = grayImage.copy()
 
 im=cv2.flip(H2,1,1)
 
-
-
 rerect_size = cv2.resize(im, (im.shape[1] // rect_size, im.shape[0] // rect_size))
 faces = face_cascade.detectMultiScale(rerect_size)
 
-
-
-#print(rerect_size)
-
-#print(faces)
-
 for f in faces:
     (x, y, w, h) = [v * rect_size for v in f]
-
-    #print(x,y,w,h)
 
     face_img = im[y:y+h, x:x+w]
     rerect_sized=cv2.resize(face_img,(150,150))
@@ -450,19 +286,12 @@ for f in faces:
 
     cv2.rectangle(im,(x,y),(x+w,y+h),GR_dict[label],2)
     cv2.rectangle(im,(x,y-40),(x+w,y),GR_dict[label],-1)
-    #cv2.putText(im, results[label], (x, y-10),cv2.FONT_HERSHEY_SIMPLEX,0.8,(255,255,255),2)
-
+    
     roi_face=face_img.copy()
 
     roi_face_half=roi_face[0:int(face_img.shape[0]/2),:]
 
-
-    #folder_path = os.path.join(folder_path,file_name)
-
     image_content = roi_face_half.copy()
-
-
-    
 
 f = np.fft.fft2(roi_face_half)
 fshift = np.fft.fftshift(f)
@@ -563,14 +392,7 @@ except:
 
 FV_LIST.append(face_half_area)
 
-#resizing image - HOG
-#print(len(FV_LIST))
-#print(roi_face_half.shape)
 resized_img = resize(roi_face_half, (128,64))
-#print(resized_img.shape)
-#plt.imshow(resized_img)
-#plt.show()
-#print(resized_img.shape)
 
 #creating hog features
 fd, hog_image = hog(resized_img, orientations=9, pixels_per_cell=(8, 8),
@@ -584,12 +406,6 @@ hog_image_rescaled_flat = hog_image_rescaled.flatten()
 FV_LIST.extend(hog_image_rescaled_flat)
 
 FV_LIST.append(gender_code)
-
-#print(len(FV_LIST))
-#print(FV_LIST)
-
-#plt.imshow(hog_image_rescaled)
-#plt.show()
 
 df = pd.DataFrame(data = [FV_LIST])
 #-----------------------------------------------------------------
@@ -612,85 +428,28 @@ def decompress_pickle(file):
     return data
 
 #choose a different model here
-#data = decompress_pickle('rfc_c_16_stacked_5_xg_stacked_FINAL.pbz2')
 data = decompress_pickle('rfc_c_16_2.pbz2')
 
 load_clf = data
 
 prediction = load_clf.predict(df)
 prediction_proba_3 = load_clf.predict_proba(df)
-
-#print('Identified:',cities[int(prediction)])
-
-#import matplotlib.pyplot as plt
-#import matplotlib.image as img
   
 # reading the image
 testImage = cv2.imread(IPath)#img.imread(IPath)
   
-# displaying the image
-#plt.imshow(testImage)
-
-#plt.show()
-
-
 r_prob_2 = prediction_proba_3[0][prediction[0]]
-#print('Surety Percentage:',round(r_prob_2*100,2),'%')
-#print(prediction[0])
-#print(prediction_proba_3)
 
 list_indx_3 = []
 for i in range(len(prediction_proba_3[0])):
     if prediction_proba_3[0][i]>0:
         list_indx_3.append(i)
         
-#print('\nProbabilties: ')
-#for i in list_indx_3:
-#    print(cities[i],prediction_proba_3[0][i])
-
 mods_faces.append(cities[int(prediction)])
 mods_faces_pct.append(round(r_prob_2*100,2))
 
-#st.write('XGB')
-#st.write('Identified:',cities[int(prediction)])
-#st.write('Surety Percentage:',round(r_prob_2*100,2),'%')
-
 idname = mods_faces[0]
 
-
-
-#----------------------------------------------------------------
-
-#XGBOOST
-
-
-#-----------------------------------------------------------------
-
-
-#rfc_c_16_stacked_5_xg_stacked_FINAL
-
-
-
-    
-    
-#---------------------------------------------------------------------
-
-
-    
-#_______________________________________________________________________
-
-#print('Name:' , idname)#cities[int(prediction)])
-#print('Surety Percentage:',round(r_prob_2*100,2),'%')
-#print('Mask Detected:',masked)
-
-#st.write('Name:' )#cities[int(prediction)])
-#st.success(idname)
-#st.write('Surety Percentage:',round(r_prob_2*100,2),'%')
-#st.write('Mask Detected:',masked)
-
-
-#plt.imshow(imgg1)
-#plt.show()
 
 #---------------------------------------------------------------------
 
@@ -744,10 +503,6 @@ X_1_2_3_cust_id = []
 for i in [X_1_cust_id,X_2_cust_id,X_3_cust_id]:
     X_1_2_3_cust_id.extend(i)
 chft = random.choice(X_1_2_3_cust_id)
-#print(chft,'\n')
-
-#print(clv_all.loc[chft])
-
 
 ind = data[data['Name']=='Sonia Laskar'].index.values[0]
 
@@ -761,13 +516,9 @@ data.loc[ind,'clv'] = clv_all.loc[chft]['clv']
 #test case
 #select randomly from transaction with Ti, with i>4
 
-
 XXX = clv_all[clv_all.counts.gt(3)]
 
-#XXX.set_index('cust',inplace = True)
-
 chft_rest = random.choices(XXX.index.values, k = 14)
-#print(chft_rest,'\n')
 
 for i in chft_rest:
     print(clv_all.loc[i])
@@ -792,13 +543,12 @@ def func_email(s):
     for i in s:
         s1.append(i.lower())
     
-    #print("".join(s1)+'@'+'hotmail.com')
     return "".join(s1)+'@'+'hotmail.com'
       
 
 data['email'] = data['Name'].apply(func_email)
 
-data['phone'] = 8355937492
+data['phone'] = 8378937538 # default phone number for all
 
 #display previous transactions of any customer
 
@@ -810,13 +560,7 @@ cts = X['date'].groupby('cust').count()
 #transaction count trs_cnt
 X = X.reset_index()
 
-#st.write(data)
-
-#print(idname)
-
 trs_cnt = cts[int(data[data['Name'] == idname]['cust'])]
-
-#print('Number of previous transactions: ',trs_cnt)
 
 if trs_cnt==1 :
     f1 = X.groupby('cust').agg({'sales':'first'})
@@ -826,21 +570,13 @@ if trs_cnt==1 :
 
     Xy = clv_all_RFMT[clv_all_RFMT['cust'] == int(data[data['Name'] == idname]['cust'])][['recency','frequency','T','monetary_value']]
 
-    #print(clv_all_RFMT[clv_all_RFMT['cust'] == int(data[data['Name'] == idname]['cust'])][['recency','frequency','T','monetary_value']])
-
-    #print(Xy)
-
     Xy['First_TValue'] = f[0]
     Xy['Second_TValue'] = 0
     Xy['Third_TValue'] = 0
-
-    #md = pickle.load(open('hclv_1.pkl','rb'))
     
     md = decompress_pickle('hclv_3.pbz2')
 
     cclv = md.predict(Xy)[0]
-
-    #print(md.predict(Xy)[0])
     
 elif trs_cnt==2 :
 
@@ -849,29 +585,20 @@ elif trs_cnt==2 :
     f2 = X.groupby('cust').nth(1)
 
     f = f1.loc[int(data[data['Name'] == idname]['cust'])]
-    #print(f[0])
-
+    
     ff = f2.loc[int(data[data['Name'] == idname]['cust'][0])]
     print(f[0],ff['sales'])
 
     Xy = clv_all_RFMT[clv_all_RFMT['cust'] == int(data[data['Name'] == idname]['cust'])][['recency','frequency','T','monetary_value']]
 
-    #print(clv_all_RFMT[clv_all_RFMT['cust'] == int(data[data['Name'] == idname]['cust'])][['recency','frequency','T','monetary_value']])
-
-    #print(Xy)
-
     Xy['First_TValue'] = f[0]
     Xy['Second_TValue'] = ff['sales']
     Xy['Third_TValue'] = 0
 
-    #md = pickle.load(open('hclv_2.pkl','rb'))
-    
     md = decompress_pickle('hclv_3.pbz2')
 
     cclv = md.predict(Xy)[0]
     
-    #print(md.predict(Xy)[0])
-
 elif trs_cnt==3 :
 
     f1 = X.groupby('cust').agg({'sales':'first'})
@@ -880,16 +607,11 @@ elif trs_cnt==3 :
 
     f3 = X.groupby('cust').nth(2)
 
-
-
     f = f1.loc[int(data[data['Name'] == idname]['cust'])]
-    #print(f[0])
 
     ff = f2.loc[int(data[data['Name'] == idname]['cust'])]
 
     fff = f3.loc[int(data[data['Name'] == idname]['cust'])]
-
-    #print(f[0],ff['sales'],fff['sales'])
 
     Xy = clv_all_RFMT[clv_all_RFMT['cust'] == int(data[data['Name'] == idname]['cust'])][['recency','frequency','T','monetary_value']]
 
@@ -897,21 +619,13 @@ elif trs_cnt==3 :
     Xy['Second_TValue'] = ff['sales']
     Xy['Third_TValue'] = fff['sales']
     
-    #print(clv_all_RFMT[clv_all_RFMT['cust'] == int(data[data['Name'] == idname]['cust'])][['recency','frequency','T','monetary_value']])
-
-    #print(Xy)
-    
-    #md = pickle.load(open('hclv_3.pkl','rb'))
-    
     md = decompress_pickle('hclv_3.pbz2')
     
     cclv = md.predict(Xy)[0]
     
 elif trs_cnt>=4 :
-    #print(trs_cnt)
+   
     cclv = round(data[data['Name']==idname]['clv'].values[0],2)
-    #print('CLV: ',round(data[data['Name']==idname]['clv'].values[0],2))
-    
     
 #___________________________________________________________________________
 
@@ -920,7 +634,7 @@ elif trs_cnt>=4 :
 mod_db_cl = pickle.load(open('mod_db_cl.pkl','rb'))
 
 model = mod_db_cl
-#mod_db_cl.predict() - no such inbuilt function - so created a user defined function here
+#mod_db_cl.predict() - no such inbuilt function in sklearn - so created a user defined function here
 
 X_hclv = cclv #sl_hclv #hclv used to predict cluster
 
@@ -940,43 +654,22 @@ ccohort = y_new
 
 #So decide recommended offer
 offer = 'C'+str(y_new)
-
-#print(offer)
-
 #___________________________________________________________________________
 
 #Send through email/msg
 
 em = data[data['Name']==idname]['email']
 ph = data[data['Name']==idname]['phone']
-#print('Email:',em.values[0])
-#print('Phone:',ph.values[0])
-
 #___________________________________________________________________________
 
 
 
 
 #___________________________________________________________________________
-
-
-#import requests
-#url = "https://www.fast2sms.com/dev/bulk"
-#payload = "sender_id=FSTSMS&message=test&language=english&route=p&numbers="+ph headers = { 'authorization': "xuYRwBcjEH5yfKGor2UNFPCJTQL39s0Sp1IMOz6nkblmdZt4DvIOERw5ie168GUPsbgQJ4KX0T2FDZz9", 'Content-Type': "application/x-www-form-urlencoded", 'Cache-Control': "no-cache", }
-#response = requests.request("POST", url, data=payload, headers=headers) print(response.text)'''
-
-
-
-#___________________________________________________________________________
-
 
 #display previous transactions of any customer
 
 def find_cust_prev_transactions_last_clv(idname):
-
-        #st.write('--------------------'*4)
-        #st.write('CUSTOMER DETAILS: ')
-        #st.write('--------------------'*4)
 
         st.write("CUSTOMER SUCCESSFULLY MATCHED !")
         w = 180
@@ -986,58 +679,33 @@ def find_cust_prev_transactions_last_clv(idname):
             st.image(testImage, width=w, caption='Customer Entering Store')
             
             st.success(idname)
-                    
-            #print('Name:' , cities[int(prediction)])
+            
             st.write('Surety Percentage:',round(r_prob_2*100,2),'%')
             st.write('Gender Predicted from Image:',gender)
             st.write('Mask Detected:',masked)
         with col2:
-            #st.write(idname)
-            
-                    #st.write('Customer Name: ')
         
-                    
-
-                    #st.image(imgg1)
-                    #plt.axis('off')
-                    #plt.show()
-                    
-                    
-                    
             st.write('Customer ID: ',int(data[data['Name']==idname]['cust']))
             st.write('Phone :', data[data['Name']==idname]['phone'].values[0] )
             st.write('Email :', data[data['Name']==idname]['email'].values[0] )
             
             trn_counts = np.unique(X[X.cust ==  int(data[data['Name']==idname]['cust']) ]['counts'].values)[0]
             st.write('Number of non zero transactions: ',trn_counts )
-            
-            #st.write('--------------------'*4)
-            #if st.checkbox('Check to see Previous Transaction Details'):
+          
             st.text('Transaction Details:')
             st.dataframe( X[X.cust ==  int(data[data['Name']==idname]['cust']) ][['date','sales']] )
-            #st.write('--------------------'*4)
-            
+           
             if trn_counts<4 :
-                st.write('\nPredicted Potential Future CLV:' , round(cclv,2))#round(clv_all.loc[int(data[data['Name']==idname]['cust']) ]['clv'] , 2))
+                st.write('\nPredicted Potential Future CLV:' , round(cclv,2))
                 st.write('Predicted Potential Cohort: ',ccohort)
             else:
-                st.write('\nCLV:' , round(cclv,2))#round(clv_all.loc[int(data[data['Name']==idname]['cust']) ]['clv'] , 2))
-            
+                st.write('\nCLV:' , round(cclv,2))
                 st.write('Cohort: ',ccohort)
                 
             st.write('Offer given: ',offer)
             st.info('PL. Note: Offer sent through email/ phone')
             st.write('--------------------'*4)
             
-
-    
-        #with st.beta_container():
-        #    st.write("Customer Matched")
-        #    st.image(imgg1, caption='Current Customer Image',use_column_width=True)
-        
-        #st.dataframe(data)
-        
-       
 #--------------------------------------------------------------------------------
 
 find_cust_prev_transactions_last_clv(idname)
