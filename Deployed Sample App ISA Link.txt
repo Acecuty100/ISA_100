@@ -1,0 +1,5 @@
+#Check out the deployed version of my sample app ISA
+
+#Slug size restriction of 500 MB restricts of how much can be uploaded at Heroku for deployment in 1 app
+
+#Link: https://dashboard.heroku.com/apps/caps-isa-sonia/deploy/github
